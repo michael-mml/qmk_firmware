@@ -86,10 +86,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [WIN_FN] = LAYOUT(
         _______, KC_MYCM,   KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU,    _______, _______,          RGB_TOG,
-        _______, _______,   DF(MAC), _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_VAD,    RGB_VAI, _______,          KC_BTN1,
-        _______, _______,   RGB_MOD, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
-        _______, RGB_SPD,   RGB_RMOD,RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
-        _______,            _______, RGB_HUI, _______, _______, NK_TOGG, KC_P1,   KC_P2,   KC_P3,   KC_PDOT, _______,             _______, KC_MS_U, KC_PGDN,
+        _______, _______,   DF(MAC), _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_RMOD,   RGB_MOD, _______,          KC_BTN1,
+        _______, _______,   RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
+        _______, RGB_SPD,   RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
+        _______,            _______, _______, _______, _______, NK_TOGG, KC_P1,   KC_P2,   KC_P3,   KC_PDOT, _______,             _______, KC_MS_U, KC_PGDN,
         _______, _______,   _______,                            _______,                            KC_P0,   _______,    _______, KC_MS_L, KC_MS_D, KC_MS_R
     ),
 
@@ -104,10 +104,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [MAC_FN] = LAYOUT(
         _______, KC_MYCM,   KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU,    _______, _______,          RGB_TOG,
-        _______, DF(WIN),   _______, _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_VAD,    RGB_VAI, _______,          KC_BTN1,
-        _______, _______,   RGB_MOD, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
-        _______, RGB_SPD,   RGB_RMOD,RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
-        _______,            _______, RGB_HUI, _______, _______, NK_TOGG, KC_P1,   KC_P2,   KC_P3,   KC_PDOT, _______,             _______, KC_MS_U, KC_PGDN,
+        _______, DF(WIN),   _______, _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_RMOD,   RGB_MOD, _______,          KC_BTN1,
+        _______, _______,   RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
+        _______, RGB_SPD,   RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
+        _______,            _______, _______, _______, _______, NK_TOGG, KC_P1,   KC_P2,   KC_P3,   KC_PDOT, _______,             _______, KC_MS_U, KC_PGDN,
         _______, _______,   _______,                            _______,                            KC_P0,   _______,    _______, KC_MS_L, KC_MS_D, KC_MS_R
     ),
     // clang-format on
@@ -119,16 +119,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // ENCODER_MAP_ENABLE seems to be the more flexible mechanism, so prefer it over ENCODER_ENABLE
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [WIN] =
-        {// encoder 1
-         ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [WIN_FN] = {},
-    // KC_TRNS = use the same key mapping in the layer closest to 0
-    // https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes_basic.md#special-keys
-    [MAC] =
-        {// encoder 1
-         ENCODER_CCW_CW(KC_TRNS, KC_TRNS)},
-    [MAC_FN] = {},
+    // layer   // encoder 1
+    [WIN]    = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [WIN_FN] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
+    [MAC]    = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [MAC_FN] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
 };
 #endif
 
