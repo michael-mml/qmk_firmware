@@ -82,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,   DF(MAC), _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_RMOD,   RGB_MOD, _______,          KC_BTN1,
         _______, _______,   RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
         _______, RGB_SPD,   RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
-        _______,            _______, _______, _______, _______, NK_TOGG, KC_P1,   KC_P2,   KC_P3,   KC_PDOT, _______,             _______, KC_MS_U, KC_PGDN,
+        _______,            _______, _______, _______, _______, NK_TOGG, _______, KC_P1  , KC_P2,   KC_P3,   KC_PDOT,             _______, KC_MS_U, KC_PGDN,
         _______, _______,   _______,                            _______,                            KC_P0,   _______,    _______, KC_MS_L, KC_MS_D, KC_MS_R
     ),
 
