@@ -16,6 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "keycodes.h"
+#include "modifiers.h"
+#include "quantum_keycodes.h"
 #include QMK_KEYBOARD_H
 #include "def.h"
 #include "layers.c"
@@ -46,12 +48,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // clang-format on
 
     // Holding the FN key on the default WIN layer toggles a Windows function layer which provides RGB controls, numpad,
-    // and mouse keys.
+    // and mouse keys (you can also tap the FN key once to momentenarily activate the function layer due to OSL; see
+    // https://docs.qmk.fm/#/one_shot_keys).
     // In the Windows function layer, press 2 to switch to the MacOS layer where KC_LCTRL and KC_LALT are replaced with
     // KC_LGUI to simulate Windows.
     //
     // Holding the FN key on the MacOS layer toggles a MacOS function layer which provides the same RGB controls,
-    // numpad, and mouse keys.
+    // numpad, and mouse keys (you can also tap the FN key once to momentenarily activate the function layer due to OSL; see
+    // https://docs.qmk.fm/#/one_shot_keys).
     // In the MacOS function layer, press 1 to switch to the Windows layer.
     //
     // To put the keyboard in bootloader mode, toggle any function layer by holding FN. Press \ to boot into bootloader.
@@ -67,41 +71,45 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // for convenience.
     // While in any function layer, press N to toggle between 6KRO and NKRO. This setting is persisted to the EEPROM and
     // thus persists between restarts.
+    //
+    // For convenience, modifier keys (e.g. KC_LCTRL) are OSMs. This means that clicking the modifier once will activate
+    // it only for the next activated key. This is done to save keystrokes for common commands such as CTRL+C. See
+    // https://docs.qmk.fm/#/one_shot_keys?id=one-shot-keys for examples.
     // clang-format off
     [WIN] = LAYOUT(
-        KC_ESC,  KC_F1,     KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,     KC_F12,  KC_PSCR,          KC_MUTE,
-        KC_GRV,  KC_1,      KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,    KC_EQL,  KC_BSPC,          KC_INS,
-        KC_TAB,  KC_Q,      KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,    KC_RBRC, KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,      KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,             KC_ENT,           KC_HOME,
-        KC_LSFT,            KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,             KC_RSFT, KC_UP,   KC_END,
-        KC_LCTL, KC_LGUI,   KC_LALT,                            KC_SPC,                             KC_RALT, MO(WIN_FN), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
+        KC_ESC,        KC_F1,         KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,        KC_F11,      KC_F12,        KC_PSCR,                KC_MUTE,
+        KC_GRV,        KC_1,          KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,          KC_MINS,     KC_EQL,        KC_BSPC,                KC_INS,
+        KC_TAB,        KC_Q,          KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,          KC_LBRC,     KC_RBRC,       KC_BSLS,                KC_DEL,
+        KC_CAPS,       KC_A,          KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,       KC_QUOT,                    KC_ENT,                 KC_HOME,
+        OSM(MOD_LSFT),                KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,                    OSM(MOD_RSFT), KC_UP,   KC_END,
+        OSM(MOD_LCTL), OSM(MOD_LGUI), OSM(MOD_LALT),                      KC_SPC,                             OSM(MOD_RALT), OSL(WIN_FN), OSM(MOD_RCTL), KC_LEFT,       KC_DOWN, KC_RGHT
     ),
 
     [WIN_FN] = LAYOUT(
-        _______, KC_MYCM,   KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU,    _______, _______,          RGB_TOG,
-        _______, _______,   DF(MAC), _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_RMOD,   RGB_MOD, _______,          KC_BTN1,
-        _______, _______,   RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
-        _______, RGB_SPD,   RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
-        _______,            _______, _______, _______, _______, NK_TOGG, _______, KC_P1  , KC_P2,   KC_P3,   KC_PDOT,             _______, KC_MS_U, KC_PGDN,
-        _______, _______,   _______,                            _______,                            KC_P0,   _______,    _______, KC_MS_L, KC_MS_D, KC_MS_R
+        _______,       KC_MYCM,       KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD,       KC_VOLU,     _______,       _______,                RGB_TOG,
+        _______,       _______,       DF(MAC), _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST,       RGB_RMOD,    RGB_MOD,       _______,                KC_BTN1,
+        _______,       _______,       RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS,       _______,     _______,       QK_BOOT,                KC_BTN2,
+        _______,       RGB_SPD,       RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS,       _______,                    _______,                KC_PGUP,
+        _______,                      _______, _______, _______, _______, NK_TOGG, _______, KC_P1  , KC_P2,   KC_P3,         KC_PDOT,                    _______,       KC_MS_U, KC_PGDN,
+        _______,       _______,       _______,                            _______,                            KC_P0,         _______,     _______,       KC_MS_L,       KC_MS_D, KC_MS_R
     ),
 
     [MAC] = LAYOUT(
-        KC_ESC,  KC_F1,     KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,     KC_F12,  KC_PSCR,          KC_MUTE,
-        KC_GRV,  KC_1,      KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,    KC_EQL,  KC_BSPC,          KC_INS,
-        KC_TAB,  KC_Q,      KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,    KC_RBRC, KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,      KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,             KC_ENT,           KC_HOME,
-        KC_LSFT,            KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,             KC_RSFT, KC_UP,   KC_END,
-        KC_LGUI, KC_LCTL,   KC_LGUI,                            KC_SPC,                             KC_RALT, MO(MAC_FN), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
+        KC_ESC,        KC_F1,         KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,        KC_F11,      KC_F12,        KC_PSCR,                KC_MUTE,
+        KC_GRV,        KC_1,          KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,          KC_MINS,     KC_EQL,        KC_BSPC,                KC_INS,
+        KC_TAB,        KC_Q,          KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,          KC_LBRC,     KC_RBRC,       KC_BSLS,                KC_DEL,
+        KC_CAPS,       KC_A,          KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,       KC_QUOT,                    KC_ENT,                 KC_HOME,
+        OSM(MOD_LSFT),                KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,        KC_SLSH,                    OSM(MOD_RSFT), KC_UP,   KC_END,
+        OSM(MOD_LGUI), OSM(MOD_LCTL), OSM(MOD_LGUI),                      KC_SPC,                             OSM(MOD_RALT), OSL(MAC_FN), OSM(MOD_RCTL), KC_LEFT,       KC_DOWN, KC_RGHT
     ),
 
     [MAC_FN] = LAYOUT(
-        _______, KC_MYCM,   KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU,    _______, _______,          RGB_TOG,
-        _______, DF(WIN),   _______, _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, RGB_RMOD,   RGB_MOD, _______,          KC_BTN1,
-        _______, _______,   RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,    _______, QK_BOOT,          KC_BTN2,
-        _______, RGB_SPD,   RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,             _______,          KC_PGUP,
-        _______,            _______, _______, _______, _______, NK_TOGG, KC_P1,   KC_P2,   KC_P3,   KC_PDOT, _______,             _______, KC_MS_U, KC_PGDN,
-        _______, _______,   _______,                            _______,                            KC_P0,   _______,    _______, KC_MS_L, KC_MS_D, KC_MS_R
+        _______,       KC_MYCM,       KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD,       KC_VOLU,    _______,        _______,                RGB_TOG,
+        _______,       DF(WIN),       _______, _______, _______, _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST,       RGB_RMOD,   RGB_MOD,        _______,                KC_BTN1,
+        _______,       _______,       RGB_HUI, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS,       _______,    _______,        QK_BOOT,                KC_BTN2,
+        _______,       RGB_SPD,       RGB_HUD, RGB_SPI, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS,       _______,                    _______,                KC_PGUP,
+        _______,                      _______, _______, _______, _______, NK_TOGG, _______, KC_P1  , KC_P2,   KC_P3,         KC_PDOT,                    _______,       KC_MS_U, KC_PGDN,
+        _______,       _______,       _______,                            _______,                            KC_P0,         _______,    _______,        KC_MS_L,       KC_MS_D, KC_MS_R
     ),
     // clang-format on
 };
